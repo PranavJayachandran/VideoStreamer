@@ -12,13 +12,13 @@ const pool = new Pool({
 })
 
 
-const insertMetadata = async (text, params) => {
+const dbQuery = async (text, params) => {
     const start = Date.now();
     const res = await pool.query(text, params)
     const duration = Date.now() - start;
 
     console.log('executed query', { text, duration, rows: res.rowCount })
-    return res
+    return res.rows
 }
 
-module.exports = { insertMetadata }
+module.exports = { dbQuery }

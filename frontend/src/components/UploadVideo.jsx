@@ -3,12 +3,12 @@ import { useDropzone } from "react-dropzone";
 import { Theme, Flex, Text, Button, TextField } from "@radix-ui/themes";
 import * as Dialog from "@radix-ui/react-dialog";
 function UploadVideo() {
-  const handleVideo = (event) => {
-    const file = event.target.files[0];
+  const handleVideo = (files) => {
+    const file = files[0];
     setSelectedVideo(file);
   };
-  const handleThumbnail = (event) => {
-    const file = event.target.files[0];
+  const handleThumbnail = (files) => {
+    const file = files[0];
     setThumbnail(file);
   };
 
@@ -23,14 +23,11 @@ function UploadVideo() {
 
   const handleUpload = async () => {
     try {
-      if (!selectedVideo) {
-        alert("Please select a video");
-        return;
-      }
       const formData = new FormData();
       formData.append("title", title);
       formData.append("description", description);
       formData.append("thumbnail", thumbnail);
+      formData.append("user_id", "1");
       let time = Date.now();
       await fetch("http://localhost:3001/metadata/upload/", {
         method: "POST",
@@ -38,21 +35,21 @@ function UploadVideo() {
       });
       console.log("Sent the metadata in", Date.now() - time);
       time = Date.now();
-      const videoData = new FormData();
-      videoData.append("video", selectedVideo);
-      await fetch("http://localhost:3001/video/upload/" + selectedVideo.name, {
-        method: "POST",
-        body: videoData,
-      });
-      console.log("Sent the video in", Date.now() - time);
+      //   const videoData = new FormData();
+      //   videoData.append("video", selectedVideo);
+      //   await fetch("http://localhost:3001/video/upload/" + selectedVideo.name, {
+      //     method: "POST",
+      //     body: videoData,
+      //   });
+      //   console.log("Sent the video in", Date.now() - time);
     } catch (err) {
-      console.log("Error while uplaoding file", error);
+      console.log("Error while uplaoding file", err);
     }
     handleCancel();
   };
   const handleCancel = () => {
     setDescription("");
-    selectedVideo(null);
+    setSelectedVideo(null);
     setThumbnail(null);
     setTitle("");
   };
