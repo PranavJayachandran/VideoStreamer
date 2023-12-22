@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 const path = require('path');
+const { transcode } = require('../publisher');
 const videoDirectory = path.join(__dirname, 'videos');
 const storage = multer.diskStorage({
     destination: "./uploads/videos",
@@ -23,7 +24,9 @@ router.post("/upload/:filename", upload.single('video'), (req, res) => {
     if (!file) {
         return res.status(400).send('No file uploaded.');
     }
-    // uploadVideo(file, req.params.filename)
+    const videoName = req.file ? req.file.filename : null;
+    console.log(videoName);
+    transcode({ fileName: videoName, id: req.body.id });
     res.status(200).send('Chunk received successfully');
 });
 

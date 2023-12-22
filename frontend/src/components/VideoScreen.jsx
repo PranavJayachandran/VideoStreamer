@@ -6,12 +6,12 @@ import { AiFillLike, AiFillDislike } from "react-icons/ai";
 const VideoScreen = () => {
   let { state } = useLocation();
   let { videoMetaData } = state;
-  let { title, description } = videoMetaData;
+  let { title, description, videopath } = videoMetaData;
   const [showDescription, setShowDescription] = useState(false);
   return (
     <div className="pt-20 text-white h-screen px-10 flex gap-8">
       <div className="w-8/12">
-        <VideoPlayer />
+        <VideoPlayer videoPath={videopath} />
         <div className="">
           <div className=" px-10 flex justify-between">
             <h1 className="text-2xl">{title}</h1>

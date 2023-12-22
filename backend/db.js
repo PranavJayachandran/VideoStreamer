@@ -2,9 +2,9 @@ const { Pool } = require('pg');
 
 const pool = new Pool({
     user: 'postgres',
-    host: 'localhost',
+    host: '127.0.0.1',
     database: 'VideoStreamer',
-    password: 'Pranav@123',
+    password: 'postgres',
     port: 5432,
     max: 20,
     idleTimeoutMillis: 30000,

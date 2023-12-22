@@ -17,6 +17,7 @@ const videoDirectory = path.join(__dirname, 'videos');
 
 const videoRoutes = require("./routes/video");
 const metadataRoutes = require("./routes/metadata");
+const thumbnailRoutes = require("./routes/thumbnail");
 app.use(express.static(path.dirname(videoDirectory)));
 
 
@@ -24,8 +25,10 @@ app.use(express.static(path.dirname(videoDirectory)));
 //Streaming logic
 app.use("/video", videoRoutes);
 app.use("/metadata", metadataRoutes);
-
+app.use("/thumbnail", thumbnailRoutes);
 
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
+
+

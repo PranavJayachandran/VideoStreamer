@@ -4,7 +4,7 @@ const router = express.Router();
 const multer = require('multer');
 const path = require('path');
 const storage = multer.diskStorage({
-    destination: "./uploads/thubmnails",
+    destination: "./uploads/thumbnails",
     filename: function (req, file, cb) {
         cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
     },
@@ -12,11 +12,12 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 router.use(express.json())
-router.post("/upload", upload.single('thumbnail'), (req, res) => {
+router.post("/upload", upload.single('thumbnail'), async (req, res) => {
     const imageName = req.file ? req.file.filename : null;
     console.log(imageName);
-    dbQuery("INSERT into metadata (title, description, user_id, originalVideoStorage,thumbnail) values ($1,$2,$3,$4,$5) returning id", [req.body.title, req.body.description, req.body.user_id, "output.mpd", imageName]);
-    res.send(req.body);
+    const id = await dbQuery("INSERT into metadata (title, description, user_id, originalVideoStoragepath,thumbnail) values ($1,$2,$3,$4,$5) returning id", [req.body.title, req.body.description, req.body.user_id, "output.mpd", imageName]);
+    console.log(id)
+    res.send(id);
 })
 router.get("/", async (req, res) => {
     let data = [];

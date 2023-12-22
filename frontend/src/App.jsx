@@ -6,18 +6,21 @@ import * as Dialog from "@radix-ui/react-dialog";
 import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 import VideoScreen from "./components/VideoScreen";
+import { SkeletonTheme } from "react-loading-skeleton";
 const App = () => {
   return (
     <BrowserRouter>
-      <div className="bg-black overflow-x-hidden">
-        <Theme>
-          <Navbar />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="video/:videoId" element={<VideoScreen />} />
-          </Routes>
-        </Theme>
-      </div>
+      <SkeletonTheme baseColor="#202020" highlightColor="#444">
+        <div className="bg-black overflow-x-hidden">
+          <Theme>
+            <Navbar />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="video/:videoId" element={<VideoScreen />} />
+            </Routes>
+          </Theme>
+        </div>
+      </SkeletonTheme>
     </BrowserRouter>
   );
 };

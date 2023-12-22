@@ -29,19 +29,23 @@ function UploadVideo() {
       formData.append("thumbnail", thumbnail);
       formData.append("user_id", "1");
       let time = Date.now();
+      let id = 0;
       await fetch("http://localhost:3001/metadata/upload/", {
         method: "POST",
         body: formData,
-      });
+      })
+        .then((result) => result.json())
+        .then((x) => (id = x[0].id));
       console.log("Sent the metadata in", Date.now() - time);
       time = Date.now();
-      //   const videoData = new FormData();
-      //   videoData.append("video", selectedVideo);
-      //   await fetch("http://localhost:3001/video/upload/" + selectedVideo.name, {
-      //     method: "POST",
-      //     body: videoData,
-      //   });
-      //   console.log("Sent the video in", Date.now() - time);
+      const videoData = new FormData();
+      videoData.append("video", selectedVideo);
+      videoData.append("id", id);
+      await fetch("http://localhost:3001/video/upload/" + selectedVideo.name, {
+        method: "POST",
+        body: videoData,
+      });
+      console.log("Sent the video in", Date.now() - time);
     } catch (err) {
       console.log("Error while uplaoding file", err);
     }
