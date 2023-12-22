@@ -1,9 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const VideoCard = () => {
+const VideoCard = ({ item }) => {
+  const videoMetaData = item;
+  console.log(item);
   return (
-    <Link to="/video/1">
+    <Link to={"/video/" + item.id} state={{ videoMetaData: videoMetaData }}>
       <div className="w-[375px] ">
         <div>
           <img
@@ -19,9 +21,7 @@ const VideoCard = () => {
             ></img>
           </div>
           <div className=" w-5/6  pr-4">
-            <div className="text-lg  leading-6 text-gray-300">
-              this is titlasdsadsadsadsadsadasde
-            </div>
+            <div className="text-lg  leading-6 text-gray-300">{item.title}</div>
             <div className="text-gray-500">username</div>
           </div>
         </div>

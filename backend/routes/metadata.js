@@ -19,7 +19,14 @@ router.post("/upload", upload.single('thumbnail'), (req, res) => {
     res.send(req.body);
 })
 router.get("/", async (req, res) => {
-    res.send(await dbQuery("SELECT * from metadata"));
+    let data = [];
+    let temp = await dbQuery("SELECT * from metadata");
+    for (let i = 0; i < 20; i++) {
+        data.push(temp[0]);
+        data.push(temp[1]);
+    }
+    console.log(data);
+    res.send(data);
 })
 
 module.exports = router;

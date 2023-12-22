@@ -14,22 +14,21 @@ const Home = () => {
 
       fetch("http://localhost:3001/metadata", requestOptions)
         .then((response) => response.json())
-        .then((result) => setVideos((prev) => [...prev, result]))
+        .then((result) => {
+          setVideos(result);
+        })
         .catch((error) => console.log("error", error));
     };
 
     getVideos();
   }, []);
 
-  useEffect(() => {
-    console.log(videos);
-  }, [videos]);
   return (
     <div className="pt-20 px-10">
       <div className="flex flex-wrap gap-6 justify-center">
-        {x.map((val) => {
-          videos.map((item) => <VideoCard />);
-        })}
+        {videos.map((item) => (
+          <VideoCard item={item} />
+        ))}
       </div>
     </div>
   );

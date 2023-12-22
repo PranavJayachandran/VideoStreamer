@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import VideoPlayer from "./VideoPlayer";
 import { AiFillLike, AiFillDislike } from "react-icons/ai";
 
 const VideoScreen = () => {
-  let description =
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris a massa id leo imperdiet facilisis. Vestibulum sodales, urna ut fermentum lobortis, leo mi maximus ex, vel lacinia dolor felis in metus. Maecenas vel nibh neque. Vivamus ut augue ultricies elit convallis feugiat. Donec eleifend, elit non accumsan feugiat, eros neque sagittis arcu, ut pellentesque nulla ex sed felis. Morbi ut dui gravida, suscipit tortor sit amet, hendrerit nisi. Aliquam fermentum ligula at cursus vestibulum. Etiam cursus vehicula tortor a ultricies. Proin sodales quis sem ut faucibus. Suspendisse sed mi accumsan, aliquam tortor eu, scelerisque turpis. Aliquam eu quam at orci eleifend facilisis sit amet non mauris. Maecenas elementum ac diam vitae aliquam. Quisque porttitor at elit at eleifend. Donec ac leo id purus convallis varius. Nullam efficitur auctor varius. Nullam dignissim diam vitae orci viverra, eget luctus mi ornare";
-  const { videoId } = useParams();
+  let { state } = useLocation();
+  let { videoMetaData } = state;
+  let { title, description } = videoMetaData;
   const [showDescription, setShowDescription] = useState(false);
   return (
     <div className="pt-20 text-white h-screen px-10 flex gap-8">
@@ -14,7 +14,7 @@ const VideoScreen = () => {
         <VideoPlayer />
         <div className="">
           <div className=" px-10 flex justify-between">
-            <h1 className="text-2xl">This is the Title of this video</h1>
+            <h1 className="text-2xl">{title}</h1>
             <div className="flex items-center gap-4">
               <AiFillLike className="h-5 w-5" />
               <span className="text-sm -ml-3">10</span>
@@ -42,9 +42,10 @@ const VideoScreen = () => {
               </>
             ) : (
               <>
-                {description.substring(0, 200) + "....."}
+                {description.substring(0, 200)}
                 {description.length > 200 ? (
                   <>
+                    {+"....."}
                     <br />
                     <span
                       className="hover:underline cursor-pointer"
