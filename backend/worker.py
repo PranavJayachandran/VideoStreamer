@@ -35,7 +35,7 @@ def convert_to_mpd(input_file_path, output_folder_path,filename,id):
         os.makedirs(output_folder_path)
 
     # Output file path for the MPD file
-    filename = filename.rsplit('.mp4', 1)[0]
+    filename = filename.rsplit('.', 1)[0]
     output_file_path = os.path.join(output_folder_path,filename+".mpd")
 
     # FFmpeg command to convert the MKV file to MPD format

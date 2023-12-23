@@ -1,7 +1,11 @@
 import React from "react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-function SkeletonComponent({ cards }) {
+
+interface Props {
+  cards: number;
+}
+const SkeletonComponent = ({ cards }: Props) => {
   return Array.from({ length: cards }, (_, index) => (
     <div key={index} className="w-[375px] mb-4">
       <div>
@@ -20,6 +24,6 @@ function SkeletonComponent({ cards }) {
       </div>
     </div>
   ));
-}
+};
 
 export default SkeletonComponent;

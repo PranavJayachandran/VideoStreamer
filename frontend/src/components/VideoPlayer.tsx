@@ -1,14 +1,16 @@
 import React, { useEffect, useRef } from "react";
 import dashjs from "dashjs";
 
-const VideoPlayer = ({ videoPath }) => {
-  console.log(videoPath);
+interface Props {
+  videoPath: string;
+}
+const VideoPlayer = ({ videoPath }: Props) => {
   const videoPlayerRef = useRef(null);
 
   useEffect(() => {
     if (videoPath != null) {
       const manifestURL = "http://localhost:3001/video/" + videoPath;
-      const videoElement = videoPlayerRef.current;
+      const videoElement = videoPlayerRef.current!;
       const player = dashjs.MediaPlayer().create();
       player.initialize(videoElement, manifestURL, false);
       return () => {

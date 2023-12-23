@@ -3,11 +3,16 @@ import { useLocation, useParams } from "react-router-dom";
 import VideoPlayer from "./VideoPlayer";
 import { AiFillLike, AiFillDislike } from "react-icons/ai";
 
+interface videoMetaData {
+  title: string;
+  description: string;
+  videopath: string;
+}
 const VideoScreen = () => {
   let { state } = useLocation();
-  let { videoMetaData } = state;
+  let { videoMetaData }: { videoMetaData: videoMetaData } = state;
   let { title, description, videopath } = videoMetaData;
-  const [showDescription, setShowDescription] = useState(false);
+  const [showDescription, setShowDescription] = useState<boolean>(false);
   return (
     <div className="pt-20 text-white h-screen px-10 flex gap-8">
       <div className="w-8/12">

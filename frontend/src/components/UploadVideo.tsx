@@ -3,23 +3,36 @@ import { useDropzone } from "react-dropzone";
 import { Theme, Flex, Text, Button, TextField } from "@radix-ui/themes";
 import * as Dialog from "@radix-ui/react-dialog";
 function UploadVideo() {
-  const handleVideo = (files) => {
+  const handleVideo = (files: any[]) => {
     const file = files[0];
     setSelectedVideo(file);
   };
-  const handleThumbnail = (files) => {
+  const handleThumbnail = (files: any[]) => {
     const file = files[0];
     setThumbnail(file);
   };
 
   const { getRootProps: getRootPropsImage, getInputProps: getInputPropsImage } =
-    useDropzone({ onDrop: handleThumbnail, accept: "image/*" });
+    useDropzone({
+      onDrop: handleThumbnail,
+      accept: {
+        "image/png": [".png"],
+        "image/jpg": [".jpg"],
+        "image/jpeg": [".jpeg"],
+      },
+    });
   const { getRootProps: getRootPropsVideo, getInputProps: getInputPropsVideo } =
-    useDropzone({ onDrop: handleVideo, accept: "video/*" });
-  const [selectedVideo, setSelectedVideo] = useState(null);
-  const [thumbnail, setThumbnail] = useState(null);
-  const [description, setDescription] = useState("");
-  const [title, setTitle] = useState("");
+    useDropzone({
+      onDrop: handleVideo,
+      accept: {
+        "video/mp4": [".mp4"],
+        "video/mkv": [".mkv"],
+      },
+    });
+  const [selectedVideo, setSelectedVideo] = useState<any>(null);
+  const [thumbnail, setThumbnail] = useState<any>(null);
+  const [description, setDescription] = useState<string>("");
+  const [title, setTitle] = useState<string>("");
 
   const handleUpload = async () => {
     try {
@@ -29,18 +42,18 @@ function UploadVideo() {
       formData.append("thumbnail", thumbnail);
       formData.append("user_id", "1");
       let time = Date.now();
-      let id = 0;
+      let id: number = 0;
       await fetch("http://localhost:3001/metadata/upload/", {
         method: "POST",
         body: formData,
       })
         .then((result) => result.json())
-        .then((x) => (id = x[0].id));
+        .then((x: Array<{ id: number }>) => (id = x[0].id));
       console.log("Sent the metadata in", Date.now() - time);
       time = Date.now();
       const videoData = new FormData();
       videoData.append("video", selectedVideo);
-      videoData.append("id", id);
+      videoData.append("id", String(id));
       await fetch("http://localhost:3001/video/upload/" + selectedVideo.name, {
         method: "POST",
         body: videoData,
@@ -80,7 +93,6 @@ function UploadVideo() {
                 <label className="text-sm">Enter the description</label>
                 <br />
                 <textarea
-                  type="text"
                   className="rounded-sm bg-[#1b1b1b] border-gray-600 border w-96 h-20"
                   style={{ resize: "none" }}
                   value={description}

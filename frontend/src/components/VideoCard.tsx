@@ -1,9 +1,18 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const VideoCard = ({ item }) => {
-  const videoMetaData = item;
-  console.log("http://localhost:3001/uploads/thumbnails/" + item.thumbnail);
+interface item {
+  id: number;
+  thumbnail: string;
+  title: string;
+  videopath: string;
+  description: string;
+}
+interface Props {
+  item: item;
+}
+const VideoCard = ({ item }: Props) => {
+  const videoMetaData: item = item;
   return (
     <Link to={"/video/" + item.id} state={{ videoMetaData: videoMetaData }}>
       <div className="w-[375px] ">
