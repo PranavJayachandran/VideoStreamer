@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { ReactElement, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { Theme, Flex, Text, Button, TextField } from "@radix-ui/themes";
+import { Flex, Button } from "@radix-ui/themes";
 import * as Dialog from "@radix-ui/react-dialog";
-function UploadVideo() {
+const UploadVideo = (): ReactElement => {
   const handleVideo = (files: any[]) => {
     const file = files[0];
     setSelectedVideo(file);
@@ -135,6 +135,6 @@ function UploadVideo() {
       </Dialog.Content>
     </Dialog.Portal>
   );
-}
+};
 
 export default UploadVideo;

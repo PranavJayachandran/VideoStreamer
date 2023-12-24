@@ -15,14 +15,17 @@
     "@types/redis": "^4.0.11",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "hls.js": "^0.8.5",
+    "jsonwebtoken": "^9.0.2",
     "multer": "^1.4.5-lts.1",
     "pg": "^8.11.3",
     "redis": "^4.6.12"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
+    "@types/jsonwebtoken": "^9.0.5",
     "@types/multer": "^1.4.11",
     "@types/pg": "^8.10.9",
     "nodemon": "^3.0.2",

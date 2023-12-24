@@ -13,7 +13,7 @@ const SkeletonComponent = ({ cards }: Props) => {
       </div>
       <div className="flex mt-2">
         <div className="w-1/6">
-          <Skeleton className="rounded-full h-10 w-10" />
+          <Skeleton className="h-10 w-10" />
         </div>
         <div className="w-5/6 pr-4">
           <div className="text-lg leading-6 text-gray-300">

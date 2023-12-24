@@ -1,6 +1,7 @@
 import React, { ReactElement, useEffect, useState } from "react";
 import VideoCard from "./VideoCard";
 import SkeletonComponent from "./SkeletonComponent";
+import { getCookie } from "../utils/cookie";
 
 interface videoData {
   id: number;
@@ -8,20 +9,31 @@ interface videoData {
   user_id: string;
   description: string;
   title: string;
-  originalvideostoragepath: string;
   videopath: string;
+  username: string;
 }
 const Home = (): ReactElement => {
   const [videos, setVideos] = useState<Array<videoData>>([]);
   useEffect(() => {
     const getVideos = () => {
+      console.log(getCookie("cookie"));
       let requestOptions: RequestInit = {
         method: "GET",
         redirect: "follow",
+        headers: {
+          Authorization: `Bearer ${getCookie("cookie")}`,
+        },
       };
 
       fetch("http://localhost:3001/metadata", requestOptions)
-        .then((response) => response.json())
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(
+              `HTTP error! Status: ${response.status}, ${response.statusText}`
+            );
+          }
+          return response.json();
+        })
         .then((result: Array<videoData>) => {
           setVideos(result);
         })

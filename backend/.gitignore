@@ -24,3 +24,5 @@ videos
 *.njsproj
 *.sln
 *.sw?
+
+.env

@@ -4,14 +4,13 @@ import { Link } from "react-router-dom";
 interface item {
   id: number;
   thumbnail: string;
+  user_id: string;
+  description: string;
   title: string;
   videopath: string;
-  description: string;
+  username: string;
 }
-interface Props {
-  item: item;
-}
-const VideoCard = ({ item }: Props) => {
+const VideoCard = ({ item }: { item: item }) => {
   const videoMetaData: item = item;
   return (
     <Link to={"/video/" + item.id} state={{ videoMetaData: videoMetaData }}>
@@ -31,7 +30,7 @@ const VideoCard = ({ item }: Props) => {
           </div>
           <div className=" w-5/6  pr-4">
             <div className="text-lg  leading-6 text-gray-300">{item.title}</div>
-            <div className="text-gray-500">username</div>
+            <div className="text-gray-500">{item.username}</div>
           </div>
         </div>
       </div>

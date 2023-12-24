@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import { dbQuery } from "../db";
 import multer from "multer";
 import path from "path";
+import { tokenVerification } from "../middleware/authorisation";
 const router = express.Router();
 const storage = multer.diskStorage({
   destination: "./uploads/thumbnails",
@@ -33,7 +34,7 @@ router.post(
     res.send(id);
   }
 );
-router.get("/", async (req: Request, res: Response) => {
+router.get("/", tokenVerification, async (req: Request, res: Response) => {
   let data: Array<{
     id: number;
     thumbnail: string;
@@ -51,7 +52,10 @@ router.get("/", async (req: Request, res: Response) => {
     title: string;
     originalvideopath: string;
     videopath: string;
-  }> = await dbQuery("SELECT * from metadata", []);
+  }> = await dbQuery(
+    "select metadata.id,thumbnail,user_id,description,title,videopath,username from metadata join users on metadata.user_id = users.id;",
+    []
+  );
   for (let i = 0; i < 20; i++) {
     data.push(temp[0]);
     data.push(temp[1]);
