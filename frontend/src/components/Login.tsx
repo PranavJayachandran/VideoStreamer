@@ -43,6 +43,7 @@ const Login = ({ setOpen }: any): ReactElement => {
   };
 
   const handleSignUp = () => {
+    console.log("Sending");
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 

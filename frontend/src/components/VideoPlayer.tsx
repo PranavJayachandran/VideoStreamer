@@ -9,6 +9,7 @@ const VideoPlayer = ({ videoPath }: Props) => {
 
   useEffect(() => {
     if (videoPath != null) {
+      console.log("ASDsad");
       const manifestURL = "http://localhost:3001/video/" + videoPath;
       const videoElement = videoPlayerRef.current!;
       const player = dashjs.MediaPlayer().create();

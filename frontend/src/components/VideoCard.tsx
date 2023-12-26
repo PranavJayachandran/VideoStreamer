@@ -11,6 +11,7 @@ interface item {
   username: string;
 }
 const VideoCard = ({ item }: { item: item }) => {
+  console.log("CARd", item);
   const videoMetaData: item = item;
   return (
     <Link to={"/video/" + item.id} state={{ videoMetaData: videoMetaData }}>

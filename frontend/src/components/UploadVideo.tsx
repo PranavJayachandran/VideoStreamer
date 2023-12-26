@@ -3,6 +3,7 @@ import { useDropzone } from "react-dropzone";
 import { Flex, Button } from "@radix-ui/themes";
 import * as Dialog from "@radix-ui/react-dialog";
 import { isUserSignedIn } from "../utils/userAuth";
+import { getCookie } from "../utils/cookie";
 const UploadVideo = ({ setOpen }: any): ReactElement => {
   const handleVideo = (files: any[]) => {
     const file = files[0];
@@ -48,12 +49,14 @@ const UploadVideo = ({ setOpen }: any): ReactElement => {
       formData.append("title", title);
       formData.append("description", description);
       formData.append("thumbnail", thumbnail);
-      formData.append("user_id", "1");
       let time = Date.now();
       let id: number = 0;
       await fetch("http://localhost:3001/metadata/upload/", {
         method: "POST",
         body: formData,
+        headers: {
+          Authorization: `Bearer ${getCookie("cookie")}`,
+        },
       })
         .then((response) => {
           return response.json();
@@ -67,12 +70,16 @@ const UploadVideo = ({ setOpen }: any): ReactElement => {
         });
       console.log("Sent the metadata in", Date.now() - time);
       time = Date.now();
+
       const videoData = new FormData();
       videoData.append("video", selectedVideo);
       videoData.append("id", String(id));
       await fetch("http://localhost:3001/video/upload/" + selectedVideo.name, {
         method: "POST",
         body: videoData,
+        headers: {
+          Authorization: `Bearer ${getCookie("cookie")}`,
+        },
       })
         .then((response) => response.json())
         .then((result) => {

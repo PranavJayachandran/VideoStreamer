@@ -20,4 +20,23 @@ const transcode = async (job: Record<string, any>): Promise<void> => {
   client.quit();
 };
 
-export { transcode };
+const createTokens = async (job: {
+  id: number;
+  title: string;
+  description: string;
+  function: string;
+}): Promise<void> => {
+  await client.connect();
+  console.log(job);
+  let jobString: string = JSON.stringify(job);
+  client.rPush(queueName, jobString, (err: Error | null, reply: number) => {
+    if (err) {
+      console.error("Error pushing job to queue:", err);
+    } else {
+      console.log(`Job ${job} pushed to queue. Reply from Redis: ${reply}`);
+    }
+  });
+  client.quit();
+};
+
+export { transcode, createTokens };

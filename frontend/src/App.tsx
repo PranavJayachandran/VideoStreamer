@@ -7,6 +7,7 @@ import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 import VideoScreen from "./components/VideoScreen";
 import { SkeletonTheme } from "react-loading-skeleton";
+import SearchResults from "./components/SearchResults";
 const App = () => {
   return (
     <BrowserRouter>
@@ -17,6 +18,7 @@ const App = () => {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="video/:videoId" element={<VideoScreen />} />
+              <Route path="search/:query" element={<SearchResults />} />
             </Routes>
           </Theme>
         </div>

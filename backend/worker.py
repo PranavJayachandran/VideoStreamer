@@ -4,6 +4,15 @@ import os
 import subprocess
 import psycopg2
 import json
+
+import nltk
+from nltk.tokenize import word_tokenize
+from nltk.corpus import stopwords
+from nltk.stem import WordNetLemmatizer
+
+nltk.download('punkt')
+nltk.download('stopwords')
+nltk.download('wordnet')
 # Create a Redis connection
 redis_client = redis.StrictRedis(host='localhost', port=6379, db=0)
 
@@ -12,6 +21,61 @@ queue_name = 'pythonQueue'
 
 def process_job(job_data):
     data=json.loads(job_data)
+    if data["function"]=="transcode":
+        transcode(data)
+    elif data["function"]=="createtags":
+        createtags(data)
+
+def createtags(data):
+    title=data['title']
+    description=data['description']
+    id=data['id']
+    title_tokens = word_tokenize(title)
+    desc_tokens = word_tokenize(description)
+
+    # Combine tokens and convert to lowercase
+    all_tokens = title_tokens + desc_tokens
+    all_tokens = [token.lower() for token in all_tokens]
+
+    # Remove stopwords (common words that do not carry much meaning)
+    stop_words = set(stopwords.words('english'))
+    filtered_tokens = [token for token in all_tokens if token.isalnum() and token not in stop_words]
+
+    # Lemmatization to reduce words to their base or root form
+    lemmatizer = WordNetLemmatizer()
+    lemmatized_tokens = [lemmatizer.lemmatize(token) for token in filtered_tokens]
+
+    # Remove duplicates
+    unique_tokens = list(set(lemmatized_tokens))
+    print(unique_tokens)
+    updateTags(unique_tokens,id)
+
+def updateTags(tags,id):
+    db_paramas={
+    'host':'localhost',
+    'port':5432,
+    'database':'VideoStreamer',
+    'user':'postgres',
+    'password':'postgres'
+    }
+
+    try:
+        tags_array_str = "{" + ",".join(map(str, tags)) + "}"
+        connection=psycopg2.connect(**db_paramas)
+        cursor=connection.cursor()
+        
+        cursor.execute("update metadata set tags=%s where id=%s;",(tags_array_str,id,))
+        connection.commit()
+    except psycopg2.Error as e:
+        print("Error connecting to PostgreSQL:", e)
+
+    finally:
+        if connection:
+            cursor.close()
+            connection.close()     
+
+
+def transcode(data):
     id=data['id']
     filename=data['fileName']
     input_file_path = "uploads/videos/"+filename
@@ -100,3 +164,13 @@ while True:
     else:
         print("No jobs in the queue. Waiting for new jobs...")
 # process_job("video-1703248642669.mp4")
+
+
+# data={"title":"How to Build a 320 Crore Media Company from Scratch - Exact NUMBERS revealed",
+#       "description":"""I'm Varun, and this is a show where we get really deep about the future of tech, entertainment and business. While other podcasts scratch the surface, I think it is important to meet the best people in their fields and go much deeper. 
+# Today, we have an extraordinary guest with us, Shradha Sharma. An acclaimed Indian journalist and a visionary entrepreneur, Shradha is the heart and soul behind YourStory, a digital media platform that's reshaping narratives in India.
+# Shradha's journey is more than just inspiring. Born into a middle-class family in Patna, Bihar, she chose a path less traveled. When founding YourStory in 2008, she had one goal: to shift the media's focus from the already successful to the underdogs, the self-made entrepreneurs who were fighting their way up.
+# I have a special place in my heart for YourStory. It was Shradha and her team who covered my journey when I was embarking on my own startup adventure. They told my story when I was just starting out, at a time when I was, in many ways, a nobody. Now, YourStory has brought to light over 150,000 entrepreneurial stories. Which is just insane. 
+# So, what are we waiting for? Let's dive into a conversation about the future of media and business with Shradha Sharma.""",
+# "id":21}
+# createtags(data)

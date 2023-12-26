@@ -8,11 +8,15 @@ export const isUserSignedIn = async (): Promise<Boolean> => {
       Authorization: `Bearer ${getCookie("cookie")}`,
     },
   };
-
-  fetch("http://localhost:3001/metadata", requestOptions).then((response) => {
-    if (!response.ok) return false;
-    else return true;
-  });
-
-  return false;
+  let auth = false;
+  await fetch("http://localhost:3001/user/isauthenticated", requestOptions)
+    .then(async (response) => {
+      if (!response.ok) {
+        auth = false;
+      } else {
+        auth = true;
+      }
+    })
+    .catch((error) => console.log("Error: ", error));
+  return auth;
 };
