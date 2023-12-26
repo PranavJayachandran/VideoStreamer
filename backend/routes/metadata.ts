@@ -18,7 +18,7 @@ const upload = multer({ storage: storage });
 router.use(express.json());
 router.post(
   "/upload",
-  upload.single("thumbnail"),
+  [upload.single("thumbnail"), tokenVerification],
   async (req: Request, res: Response) => {
     const imageName = req.file ? req.file.filename : null;
     const id = await dbQuery(
@@ -34,7 +34,7 @@ router.post(
     res.send(id);
   }
 );
-router.get("/", tokenVerification, async (req: Request, res: Response) => {
+router.get("/", async (req: Request, res: Response) => {
   let data: Array<{
     id: number;
     thumbnail: string;

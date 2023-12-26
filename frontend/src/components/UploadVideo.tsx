@@ -2,7 +2,8 @@ import React, { ReactElement, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { Flex, Button } from "@radix-ui/themes";
 import * as Dialog from "@radix-ui/react-dialog";
-const UploadVideo = (): ReactElement => {
+import { isUserSignedIn } from "../utils/userAuth";
+const UploadVideo = ({ setOpen }: any): ReactElement => {
   const handleVideo = (files: any[]) => {
     const file = files[0];
     setSelectedVideo(file);
@@ -33,8 +34,15 @@ const UploadVideo = (): ReactElement => {
   const [thumbnail, setThumbnail] = useState<any>(null);
   const [description, setDescription] = useState<string>("");
   const [title, setTitle] = useState<string>("");
+  const [error, setError] = useState<string>("");
 
   const handleUpload = async () => {
+    let isAuthenticated: Boolean = await isUserSignedIn();
+    if (!isAuthenticated) {
+      setError("Please login to upload");
+      return;
+    }
+
     try {
       const formData = new FormData();
       formData.append("title", title);
@@ -47,8 +55,16 @@ const UploadVideo = (): ReactElement => {
         method: "POST",
         body: formData,
       })
-        .then((result) => result.json())
-        .then((x: Array<{ id: number }>) => (id = x[0].id));
+        .then((response) => {
+          return response.json();
+        })
+        .then((result) => {
+          if (result.msg) {
+            setError(result.msg);
+          } else {
+            id = result[0].id;
+          }
+        });
       console.log("Sent the metadata in", Date.now() - time);
       time = Date.now();
       const videoData = new FormData();
@@ -57,8 +73,17 @@ const UploadVideo = (): ReactElement => {
       await fetch("http://localhost:3001/video/upload/" + selectedVideo.name, {
         method: "POST",
         body: videoData,
-      });
+      })
+        .then((response) => response.json())
+        .then((result) => {
+          if (result.msg) {
+            setError(result.msg);
+          }
+        })
+        .catch((error) => console.log("Error => ", error));
       console.log("Sent the video in", Date.now() - time);
+
+      setOpen(false);
     } catch (err) {
       console.log("Error while uplaoding file", err);
     }
@@ -77,6 +102,7 @@ const UploadVideo = (): ReactElement => {
         <div className="flex flex-col gap-2">
           <div className="flex gap-10 items-center">
             <div>
+              <div className="text-red-600 text-sm">{error}</div>
               <div className="">
                 <label className="text-sm">Enter the title</label>
                 <br />
@@ -123,14 +149,12 @@ const UploadVideo = (): ReactElement => {
           <Dialog.Close>
             <Button onClick={handleCancel}>Cancel</Button>
           </Dialog.Close>
-          <Dialog.Close>
-            <Button
-              onClick={handleUpload}
-              className="bg-blue-500 px-2 py-1 rounded-xl"
-            >
-              Upload
-            </Button>
-          </Dialog.Close>
+          <Button
+            onClick={handleUpload}
+            className="bg-blue-500 px-2 py-1 rounded-xl"
+          >
+            Upload
+          </Button>{" "}
         </Flex>
       </Dialog.Content>
     </Dialog.Portal>

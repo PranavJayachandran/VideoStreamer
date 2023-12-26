@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import multer from "multer";
 import path from "path";
 import { transcode } from "../publisher";
+import { tokenVerification } from "../middleware/authorisation";
 const router = express.Router();
 
 const videoDirectory = path.join(__dirname, "videos");
@@ -16,7 +17,7 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-router.get("/:filename", (req: Request, res: Response) => {
+router.get("/:filename", tokenVerification, (req: Request, res: Response) => {
   const fileName = req.params.filename;
   const filePath = path.join(videoDirectory, "../../videos/" + fileName);
   res.sendFile(filePath);
@@ -24,7 +25,7 @@ router.get("/:filename", (req: Request, res: Response) => {
 
 router.post(
   "/upload/:filename",
-  upload.single("video"),
+  [upload.single("video"), tokenVerification],
   (req: Request, res: Response) => {
     const file = req.file;
     if (!file) {

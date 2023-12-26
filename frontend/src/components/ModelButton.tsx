@@ -10,7 +10,7 @@ const ModalButton = ({
   color: string;
 }): ReactElement => {
   const [open, setOpen] = useState<any>(false);
-  console.log(message, color);
+
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>
       <Dialog.Trigger>

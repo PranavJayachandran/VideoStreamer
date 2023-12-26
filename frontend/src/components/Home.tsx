@@ -16,7 +16,6 @@ const Home = (): ReactElement => {
   const [videos, setVideos] = useState<Array<videoData>>([]);
   useEffect(() => {
     const getVideos = () => {
-      console.log(getCookie("cookie"));
       let requestOptions: RequestInit = {
         method: "GET",
         redirect: "follow",

@@ -49,7 +49,6 @@ router.post("/login", async (req: Request, res: Response) => {
     [userName, passWord]
   );
   if (result.length == 0) {
-    console.log("Send");
     res.send({ msg: "Incorrect username or password" });
   } else {
     let secret: string = "videoStreamer_secret_key";
@@ -81,6 +80,14 @@ router.get(
       console.error(error);
       res.send({ msg: "User not found" });
     }
+  }
+);
+
+router.get(
+  "/isauthenticated",
+  tokenVerification,
+  async (req: Request, res: Response) => {
+    res.send({ msg: "Valid user" });
   }
 );
 

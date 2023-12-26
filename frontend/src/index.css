@@ -21,7 +21,7 @@
   width: 90vw;
   max-width: 600px;
   max-height: 90vh;
-  height: 72vh;
+  height: 75vh;
   padding: 25px;
   animation: contentShow 400ms cubic-bezier(0.16, 1, 0.3, 1);
 }

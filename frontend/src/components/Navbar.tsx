@@ -27,7 +27,6 @@ const Navbar = (): ReactElement => {
         return response.json();
       })
       .then((result: { username: string }) => {
-        console.log(result);
         setUsername(result.username);
       })
       .catch((error) => console.log("error", error));
