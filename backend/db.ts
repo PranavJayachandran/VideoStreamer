@@ -12,12 +12,16 @@ const pool = new Pool({
 });
 
 const dbQuery = async (text: string, params: any) => {
-  const start = Date.now();
-  const res = await pool.query(text, params);
-  const duration = Date.now() - start;
+  try {
+    const start = Date.now();
+    const res = await pool.query(text, params);
+    const duration = Date.now() - start;
 
-  console.log("executed query", { text, duration, rows: res.rowCount });
-  return res.rows;
+    // console.log("executed query", { text, duration, rows: res.rowCount });
+    return res.rows;
+  } catch (error) {
+    throw error;
+  }
 };
 
 export { dbQuery };

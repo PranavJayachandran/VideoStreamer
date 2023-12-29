@@ -8,16 +8,16 @@ const VideoPlayer = ({ videoPath }: Props) => {
   const videoPlayerRef = useRef(null);
 
   useEffect(() => {
-    if (videoPath != null) {
-      console.log("ASDsad");
-      const manifestURL = "http://localhost:3001/video/" + videoPath;
-      const videoElement = videoPlayerRef.current!;
-      const player = dashjs.MediaPlayer().create();
-      player.initialize(videoElement, manifestURL, false);
-      return () => {
-        player.reset();
-      };
-    }
+    // if (videoPath != null) {
+    //   console.log("ASDsad");
+    //   const manifestURL = "http://localhost:3001/video/" + videoPath;
+    //   const videoElement = videoPlayerRef.current!;
+    //   const player = dashjs.MediaPlayer().create();
+    //   player.initialize(videoElement, manifestURL, false);
+    //   return () => {
+    //     player.reset();
+    //   };
+    // }
   }, []);
 
   return (
