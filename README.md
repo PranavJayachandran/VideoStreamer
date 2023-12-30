@@ -2,7 +2,9 @@
 
 ## Overview
 
-VideoStreamer as the name suggests is a video streaming app that lets users upload, view and react to videos.
+VideoStreamer as the name suggests is a video streaming app that lets users upload, view and react to videos
+
+![Untitled Diagram (1)](https://github.com/PranavJayachandran/VideoStreamer/assets/77000606/2a117e3b-f676-42a3-a1dc-71462d19fa5a)
 
 ## Getting Started
 
