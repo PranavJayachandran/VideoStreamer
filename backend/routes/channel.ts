@@ -4,10 +4,8 @@ import { dbQuery } from "../db";
 const router = express.Router();
 
 router.post("/join", tokenVerification, async (req: Request, res: Response) => {
-  console.log("joining");
   let member = req.body.user_id;
   let owner = req.body.channel_id;
-  console.log(owner, member);
   try {
     await dbQuery("INSERT into channel (owner,member) values($1,$2)", [
       owner,

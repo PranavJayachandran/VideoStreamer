@@ -35,7 +35,6 @@ router.post(
         imageName,
       ]
     );
-    console.log(id);
     createTokens({
       id: id[0].id,
       title: req.body.title,
@@ -85,7 +84,6 @@ router.post("/search", async (req: Request, res: Response) => {
     videopath: string;
   }> = [];
   let query = req.body.query.split("+");
-  console.log("QW", query);
   let temp: Array<{
     id: number;
     thumbnail: string;

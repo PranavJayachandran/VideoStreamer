@@ -10,6 +10,7 @@ import {
   unlikeVideo,
 } from "../helpers/likedislikehelper";
 import ChannelName from "./ChannelName";
+import Comments from "./Comments";
 
 interface videoMetaData {
   id: number;
@@ -46,7 +47,6 @@ const VideoScreen = () => {
     )
       .then((response) => response.json())
       .then((result) => {
-        console.log(result);
         setLike(parseInt(result.likes));
         setDislike(parseInt(result.dislikes));
         setIsDisliked(result.disliked);
@@ -146,6 +146,7 @@ const VideoScreen = () => {
             username={videoMetaData.username}
           />
         </div>
+        <Comments video_id={videoMetaData.id} />
       </div>
       <div>Something will comeback</div>
     </div>

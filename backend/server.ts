@@ -8,6 +8,7 @@ import { router as thumbnailRoutes } from "./routes/thumbnail";
 import { router as userRoutes } from "./routes/user";
 import { router as likesdisliksRouter } from "./routes/likesdislikes";
 import { router as channelRouter } from "./routes/channel";
+import { router as commentRouter } from "./routes/comments";
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -24,6 +25,7 @@ app.use("/thumbnail", thumbnailRoutes);
 app.use("/user", userRoutes);
 app.use("/likesdislikes", likesdisliksRouter);
 app.use("/channel", channelRouter);
+app.use("/comment", commentRouter);
 
 let port = process.env.PORT || 3001;
 app.listen(port, () => {

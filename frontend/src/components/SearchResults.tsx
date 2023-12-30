@@ -41,7 +41,6 @@ const SearchResults = (): ReactElement => {
         })
         .then((result: Array<videoData>) => {
           setVideos(result);
-          console.log(result);
         })
         .catch((error) => console.log("error", error));
     };

@@ -6,32 +6,14 @@ import Login from "./Login";
 import { getCookie } from "../utils/cookie";
 import Logout from "./Logout";
 import { FaSearch } from "react-icons/fa";
+import { getUser } from "../utils/userAuth";
 
 const Navbar = (): ReactElement => {
   const [username, setUsername] = useState<string>("");
   const [searchString, setSearchString] = useState<string>("");
-  const getUserName = () => {
-    let requestOptions: RequestInit = {
-      method: "GET",
-      redirect: "follow",
-      headers: {
-        Authorization: `Bearer ${getCookie("cookie")}`,
-      },
-    };
-
-    fetch("http://localhost:3001/user/username", requestOptions)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(
-            `HTTP error! Status: ${response.status}, ${response.statusText}`
-          );
-        }
-        return response.json();
-      })
-      .then((result: { username: string }) => {
-        setUsername(result.username);
-      })
-      .catch((error) => console.log("error", error));
+  const getUserName = async () => {
+    let data = await getUser();
+    setUsername(data.username);
   };
 
   useEffect(() => {

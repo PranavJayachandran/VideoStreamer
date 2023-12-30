@@ -79,7 +79,7 @@ router.get(
       let userName = await dbQuery("Select username from users where id=$1", [
         id,
       ]);
-      res.send({ username: userName[0].username });
+      res.send({ username: userName[0].username, id: req.body.user_id });
     } catch (error) {
       console.error(error);
       res.send({ msg: "User not found" });
@@ -91,7 +91,6 @@ router.get(
   "/isauthenticated",
   tokenVerification,
   async (req: Request, res: Response) => {
-    console.log("ASDASD");
     res.send({ msg: "Valid user" });
   }
 );

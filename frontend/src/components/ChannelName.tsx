@@ -18,7 +18,6 @@ const ChannelName = ({
     let data: { isMember: Boolean; numberofmembers: string } =
       await fetchChannelData(user_id);
     setIsMember(data.isMember);
-    console.log(data);
     setNumberOfMemebers(parseInt(data.numberofmembers));
   };
   useEffect(() => {
