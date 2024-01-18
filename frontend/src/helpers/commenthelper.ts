@@ -28,7 +28,7 @@ export const getCommenttree = async (video_id: number) => {
   let data = [];
   try {
     let response = await fetch(
-      `http://localhost:3001/comment?video_id=${video_id}`,
+      `${import.meta.env.VITE_BACKEND_URL}/comment?video_id=${video_id}`,
       requestOptions
     );
     let result = await response.json();
@@ -62,7 +62,7 @@ export const addComment = async (
     }),
   };
   let response = await fetch(
-    "http://localhost:3001/comment/add",
+    `${import.meta.env.VITE_BACKEND_URL}/comment/add`,
     requestOptions
   );
   let result = await response.json();

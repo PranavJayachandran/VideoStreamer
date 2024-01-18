@@ -19,7 +19,6 @@ const upload = multer({ storage: storage });
 
 router.get("/:filename", (req: Request, res: Response) => {
   const fileName = req.params.filename;
-  console.log(fileName);
   const filePath = path.join(videoDirectory, "../../videos/" + fileName);
   res.sendFile(filePath);
 });

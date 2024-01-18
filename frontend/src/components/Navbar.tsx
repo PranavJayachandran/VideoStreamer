@@ -1,14 +1,14 @@
 import React, { ReactElement, useEffect, useState } from "react";
-import UploadVideo from "./UploadVideo";
+import { UploadVideo } from "./UploadVideo";
 import { Link } from "react-router-dom";
-import ModalButton from "./ModelButton";
-import Login from "./Login";
+import { ModalButton } from "./ModelButton";
+import { Login } from "./Login";
 import { getCookie } from "../utils/cookie";
-import Logout from "./Logout";
+import { Logout } from "./Logout";
 import { FaSearch } from "react-icons/fa";
 import { getUser } from "../utils/userAuth";
 
-const Navbar = (): ReactElement => {
+export const Navbar = (): ReactElement => {
   const [username, setUsername] = useState<string>("");
   const [searchString, setSearchString] = useState<string>("");
   const getUserName = async () => {
@@ -78,4 +78,3 @@ const Navbar = (): ReactElement => {
   );
 };
 
-export default Navbar;

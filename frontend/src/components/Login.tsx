@@ -3,7 +3,7 @@ import { Flex } from "@radix-ui/themes";
 import React, { ReactElement, useState } from "react";
 import { setHttpOnlyCookie } from "../utils/cookie";
 
-const Login = ({ setOpen }: any): ReactElement => {
+export const Login = ({ setOpen }: any): ReactElement => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [login, setLogin] = useState<Boolean>(true);
@@ -12,7 +12,7 @@ const Login = ({ setOpen }: any): ReactElement => {
     setPassword("");
     setUsername("");
   };
-  const handleLogin = () => {
+  const handleLogin = async () => {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
@@ -27,22 +27,30 @@ const Login = ({ setOpen }: any): ReactElement => {
       body: raw,
       redirect: "follow",
     };
-
-    fetch("http://localhost:3001/user/login", requestOptions)
-      .then((response) => response.json())
-      .then((result) => {
-        if (result.token) {
-          setHttpOnlyCookie("cookie", result.token);
-          setOpen(false);
-          window.location.reload();
-        } else {
-          setError(result.msg);
-        }
-      })
-      .catch((error) => console.log("error", error));
+    try {
+      let response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/user/login`,
+        requestOptions
+      );
+      if (!response.ok) {
+        throw new Error(
+          `HTTP error! Status: ${response.status}, ${response.statusText}`
+        );
+      }
+      let result = await response.json();
+      if (result.token) {
+        setHttpOnlyCookie("cookie", result.token);
+        setOpen(false);
+        window.location.reload();
+      } else {
+        setError(result.msg);
+      }
+    } catch (error) {
+      console.log("error", error);
+    }
   };
 
-  const handleSignUp = () => {
+  const handleSignUp = async () => {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
@@ -58,16 +66,25 @@ const Login = ({ setOpen }: any): ReactElement => {
       redirect: "follow",
     };
 
-    fetch("http://localhost:3001/user/signup", requestOptions)
-      .then((response) => response.json())
-      .then((result) => {
-        if (result.token) {
-          setOpen(false);
-          setHttpOnlyCookie("cookie", result.token);
-          window.location.reload();
-        } else setError(result.msg);
-      })
-      .catch((error) => console.log("error", error));
+    try {
+      let response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/user/signup`,
+        requestOptions
+      );
+      if (!response.ok) {
+        throw new Error(
+          `HTTP error! Status: ${response.status}, ${response.statusText}`
+        );
+      }
+      let result = await response.json();
+      if (result.token) {
+        setOpen(false);
+        setHttpOnlyCookie("cookie", result.token);
+        window.location.reload();
+      } else setError(result.msg);
+    } catch (error) {
+      console.log("error", error);
+    }
   };
   return (
     <Dialog.Portal>
@@ -142,5 +159,3 @@ const Login = ({ setOpen }: any): ReactElement => {
     </Dialog.Portal>
   );
 };
-
-export default Login;

@@ -11,7 +11,7 @@ export const fetchChannelData = async (channel_id: number) => {
   };
   try {
     let response = await fetch(
-      `http://localhost:3001/channel?owner=${channel_id}`,
+      `${import.meta.env.VITE_BACKEND_URL}/channel?owner=${channel_id}`,
       requestOptions
     );
     let result = await response.json();
@@ -23,7 +23,9 @@ export const fetchChannelData = async (channel_id: number) => {
       redirect: "follow",
     };
     response = await fetch(
-      `http://localhost:3001/channel/ismember?owner=${channel_id}`,
+      `${
+        import.meta.env.VITE_BACKEND_URL
+      }/channel/ismember?owner=${channel_id}`,
       requestOptions
     );
 
@@ -51,7 +53,7 @@ export const joinChannel = async (channel_id: number) => {
   };
   try {
     let response = await fetch(
-      "http://localhost:3001/channel/join",
+      `${import.meta.env.VITE_BACKEND_URL}/channel/join`,
       requestOptions
     );
     let result = await response.json();
@@ -75,7 +77,7 @@ export const leaveChannel = async (channel_id: number) => {
   };
   try {
     let response = await fetch(
-      "http://localhost:3001/channel/leave",
+      `${import.meta.env.VITE_BACKEND_URL}/channel/leave`,
       requestOptions
     );
     let result = response.json();

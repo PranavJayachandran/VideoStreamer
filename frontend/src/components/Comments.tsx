@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { addComment, getCommenttree } from "../helpers/commenthelper";
 import { IComment } from "../interfaces/IComment";
-import Comment from "./Comment";
+import { Comment } from "./Comment";
 import { IoSend } from "react-icons/io5";
 import { getUser } from "../utils/userAuth";
 
-const Comments = ({ video_id }: { video_id: number }) => {
+export const Comments = ({ video_id }: { video_id: number }) => {
   const [comments, setComments] = useState<IComment[]>([]);
   const [replyComment, setReplyComment] = useState<string>("");
   const fetchComments = async () => {
@@ -54,4 +54,3 @@ const Comments = ({ video_id }: { video_id: number }) => {
   );
 };
 
-export default Comments;

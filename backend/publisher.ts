@@ -27,7 +27,6 @@ const createTokens = async (job: {
   function: string;
 }): Promise<void> => {
   await client.connect();
-  console.log(job);
   let jobString: string = JSON.stringify(job);
   client.rPush(queueName, jobString, (err: Error | null, reply: number) => {
     if (err) {

@@ -15,7 +15,10 @@ export const likeVideo = (video_id: number) => {
     redirect: "follow",
   };
 
-  fetch("http://localhost:3001/likesdislikes/addlike", requestOptions)
+  fetch(
+    `${import.meta.env.VITE_BACKEND_URL}/likesdislikes/addlike`,
+    requestOptions
+  )
     .then((response) => response.text())
     .then((result) => console.log(result))
     .catch((error) => console.log("error", error));
@@ -35,7 +38,10 @@ export const unlikeVideo = (video_id: number) => {
     redirect: "follow",
   };
 
-  fetch("http://localhost:3001/likesdislikes/removelike", requestOptions)
+  fetch(
+    `${import.meta.env.VITE_BACKEND_URL}/likesdislikes/removelike`,
+    requestOptions
+  )
     .then((response) => response.text())
     .then((result) => console.log(result))
     .catch((error) => console.log("error", error));
@@ -56,7 +62,10 @@ export const disLikeVideo = (video_id: number) => {
     redirect: "follow",
   };
 
-  fetch("http://localhost:3001/likesdislikes/adddislike", requestOptions)
+  fetch(
+    `${import.meta.env.VITE_BACKEND_URL}/likesdislikes/adddislike`,
+    requestOptions
+  )
     .then((response) => response.text())
     .then((result) => console.log(result))
     .catch((error) => console.log("error", error));
@@ -76,7 +85,10 @@ export const undisLikeVideo = (video_id: number) => {
     redirect: "follow",
   };
 
-  fetch("http://localhost:3001/likesdislikes/removedislike", requestOptions)
+  fetch(
+    `${import.meta.env.VITE_BACKEND_URL}/likesdislikes/removedislike`,
+    requestOptions
+  )
     .then((response) => response.text())
     .then((result) => console.log(result))
     .catch((error) => console.log("error", error));

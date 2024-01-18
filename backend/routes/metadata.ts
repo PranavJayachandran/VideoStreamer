@@ -93,9 +93,19 @@ router.post("/search", async (req: Request, res: Response) => {
     originalvideopath: string;
     videopath: string;
   }> = await dbQuery(
-    "SELECT metadata.id,thumbnail,user_id,description,title,videopath,username from metadata join users on metadata.user_id = users.id  WHERE $1 && tags ORDER BY ARRAY_LENGTH(ARRAY(SELECT UNNEST($1) INTERSECT SELECT UNNEST(tags)), 1) DESC;",
+    `SELECT metadata.id,thumbnail,user_id,description,title,videopath,username, coalesce(ARRAY_LENGTH(ARRAY
+      (
+      SELECT UNNEST($1::text[])
+      INTERSECT
+      SELECT UNNEST(tags)
+      ),1),0) from metadata join users on metadata.user_id = users.id ORDER BY  coalesce(ARRAY_LENGTH(ARRAY
+      (
+      SELECT UNNEST($1)
+      INTERSECT
+      SELECT UNNEST(tags)
+      ),1),0) DESC;`,
     [query]
   );
-  res.send([temp[0], temp[0], temp[0], temp[0]]);
+  res.send([temp[0], temp[1], temp[0], temp[1]]);
 });
 export { router };

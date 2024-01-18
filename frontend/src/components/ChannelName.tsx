@@ -5,7 +5,7 @@ import {
   leaveChannel,
 } from "../helpers/channelhelper";
 
-const ChannelName = ({
+export const ChannelName = ({
   user_id,
   username,
 }: {
@@ -59,4 +59,4 @@ const ChannelName = ({
   );
 };
 
-export default ChannelName;
+

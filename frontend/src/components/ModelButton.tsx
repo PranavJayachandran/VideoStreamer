@@ -1,6 +1,7 @@
 import React, { ReactElement, useState } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
-const ModalButton = ({
+
+export const ModalButton = ({
   children,
   message,
   color,
@@ -23,4 +24,4 @@ const ModalButton = ({
   );
 };
 
-export default ModalButton;
+

@@ -9,15 +9,19 @@ export const isUserSignedIn = async (): Promise<Boolean> => {
     },
   };
   let auth = false;
-  await fetch("http://localhost:3001/user/isauthenticated", requestOptions)
-    .then(async (response) => {
-      if (!response.ok) {
-        auth = false;
-      } else {
-        auth = true;
-      }
-    })
-    .catch((error) => console.log("Error: ", error));
+  try {
+    let response = await fetch(
+      `${import.meta.env.VITE_BACKEND_URL}/user/isauthenticated`,
+      requestOptions
+    );
+    if (!response.ok) {
+      auth = false;
+    } else {
+      auth = true;
+    }
+  } catch (error) {
+    console.log("Error: ", error);
+  }
   return auth;
 };
 
@@ -31,7 +35,7 @@ export const getUser = async () => {
   };
 
   let response = await fetch(
-    "http://localhost:3001/user/username",
+    `${import.meta.env.VITE_BACKEND_URL}/user/username`,
     requestOptions
   );
   if (!response.ok) {

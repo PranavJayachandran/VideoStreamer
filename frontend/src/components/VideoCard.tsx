@@ -1,24 +1,19 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { IVideoMetadata } from "../interfaces/IVideoMetadata";
 
-interface item {
-  id: number;
-  thumbnail: string;
-  user_id: string;
-  description: string;
-  title: string;
-  videopath: string;
-  username: string;
-}
-const VideoCard = ({ item }: { item: item }) => {
-  const videoMetaData: item = item;
+export const VideoCard = ({ item }: { item: IVideoMetadata }) => {
+  const videoMetaData: IVideoMetadata = item;
   return (
     <Link to={"/video/" + item.id} state={{ videoMetaData: videoMetaData }}>
       <div className="w-[375px] ">
         <div>
           <img
             className="rounded-xl object-cover w-[400px] h-[225px]"
-            src={"http://localhost:3001/uploads/thumbnails/" + item.thumbnail}
+            src={
+              `${import.meta.env.VITE_BACKEND_URL}/uploads/thumbnails/` +
+              item.thumbnail
+            }
           ></img>
         </div>
         <div className="flex mt-2">
@@ -37,5 +32,3 @@ const VideoCard = ({ item }: { item: item }) => {
     </Link>
   );
 };
-
-export default VideoCard;

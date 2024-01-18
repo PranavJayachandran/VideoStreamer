@@ -4,7 +4,7 @@ import { Flex, Button } from "@radix-ui/themes";
 import * as Dialog from "@radix-ui/react-dialog";
 import { isUserSignedIn } from "../utils/userAuth";
 import { getCookie } from "../utils/cookie";
-const UploadVideo = ({ setOpen }: any): ReactElement => {
+export const UploadVideo = ({ setOpen }: any): ReactElement => {
   const handleVideo = (files: any[]) => {
     const file = files[0];
     setSelectedVideo(file);
@@ -51,43 +51,63 @@ const UploadVideo = ({ setOpen }: any): ReactElement => {
       formData.append("thumbnail", thumbnail);
       let time = Date.now();
       let id: number = 0;
-      await fetch("http://localhost:3001/metadata/upload/", {
-        method: "POST",
-        body: formData,
-        headers: {
-          Authorization: `Bearer ${getCookie("cookie")}`,
-        },
-      })
-        .then((response) => {
-          return response.json();
-        })
-        .then((result) => {
-          if (result.msg) {
-            setError(result.msg);
-          } else {
-            id = result[0].id;
+
+      try {
+        let response = await fetch(
+          `${import.meta.env.VITE_BACKEND_URL}/metadata/upload/`,
+          {
+            method: "POST",
+            body: formData,
+            headers: {
+              Authorization: `Bearer ${getCookie("cookie")}`,
+            },
           }
-        });
+        );
+        if (!response.ok) {
+          throw new Error(
+            `HTTP error! Status: ${response.status}, ${response.statusText}`
+          );
+        }
+        let result = await response.json();
+        if (result.msg) {
+          setError(result.msg);
+        } else {
+          id = result[0].id;
+        }
+      } catch (error) {
+        console.log("error", error);
+      }
+
       console.log("Sent the metadata in", Date.now() - time);
       time = Date.now();
 
       const videoData = new FormData();
       videoData.append("video", selectedVideo);
       videoData.append("id", String(id));
-      await fetch("http://localhost:3001/video/upload/" + selectedVideo.name, {
-        method: "POST",
-        body: videoData,
-        headers: {
-          Authorization: `Bearer ${getCookie("cookie")}`,
-        },
-      })
-        .then((response) => response.json())
-        .then((result) => {
-          if (result.msg) {
-            setError(result.msg);
+      try {
+        let response = await fetch(
+          `${import.meta.env.VITE_BACKEND_URL}/video/upload/` +
+            selectedVideo.name,
+          {
+            method: "POST",
+            body: videoData,
+            headers: {
+              Authorization: `Bearer ${getCookie("cookie")}`,
+            },
           }
-        })
-        .catch((error) => console.log("Error => ", error));
+        );
+        if (!response.ok) {
+          throw new Error(
+            `HTTP error! Status: ${response.status}, ${response.statusText}`
+          );
+        }
+        let result = await response.json();
+        if (result.msg) {
+          setError(result.msg);
+        }
+      } catch (error) {
+        console.log("error", error);
+      }
       console.log("Sent the video in", Date.now() - time);
 
       setOpen(false);
@@ -168,4 +188,3 @@ const UploadVideo = ({ setOpen }: any): ReactElement => {
   );
 };
 
-export default UploadVideo;

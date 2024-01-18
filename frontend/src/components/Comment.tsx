@@ -5,7 +5,7 @@ import { IoSend } from "react-icons/io5";
 import { addComment } from "../helpers/commenthelper";
 import { getUser } from "../utils/userAuth";
 
-const Comment = ({ comment }: { comment: IComment }) => {
+export const Comment = ({ comment }: { comment: IComment }) => {
   const [commentState, setCommentState] = useState<IComment>(comment);
   const [showReplies, setShowReplies] = useState<Boolean>(false);
   const [replyComment, setReplyComment] = useState<string>("");
@@ -88,4 +88,3 @@ const Comment = ({ comment }: { comment: IComment }) => {
   );
 };
 
-export default Comment;

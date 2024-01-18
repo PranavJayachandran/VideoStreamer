@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
-import VideoPlayer from "./VideoPlayer";
+import { VideoPlayer } from "./VideoPlayer";
 import { AiFillLike, AiFillDislike } from "react-icons/ai";
 import { getCookie } from "../utils/cookie";
 import {
@@ -9,21 +9,13 @@ import {
   undisLikeVideo,
   unlikeVideo,
 } from "../helpers/likedislikehelper";
-import ChannelName from "./ChannelName";
-import Comments from "./Comments";
+import { ChannelName } from "./ChannelName";
+import { Comments } from "./Comments";
+import { IVideoMetadata } from "../interfaces/IVideoMetadata";
 
-interface videoMetaData {
-  id: number;
-  thumbnail: string;
-  user_id: number;
-  description: string;
-  title: string;
-  videopath: string;
-  username: string;
-}
-const VideoScreen = () => {
+export const VideoScreen = () => {
   let { state } = useLocation();
-  let { videoMetaData }: { videoMetaData: videoMetaData } = state;
+  let { videoMetaData }: { videoMetaData: IVideoMetadata } = state;
   let { title, description, videopath, username } = videoMetaData;
   const [showDescription, setShowDescription] = useState<boolean>(false);
   const [like, setLike] = useState<number>(0);
@@ -31,7 +23,7 @@ const VideoScreen = () => {
   const [isLiked, setIsLiked] = useState<Boolean>(false);
   const [isDisliked, setIsDisliked] = useState<Boolean>(false);
 
-  const getLikeDislikeCommentData = () => {
+  const getLikeDislikeCommentData = async () => {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("Authorization", `Bearer ${getCookie("cookie")}`);
@@ -41,18 +33,25 @@ const VideoScreen = () => {
       redirect: "follow",
     };
 
-    fetch(
-      `http://localhost:3001/likesdislikes?video_id=` + videoMetaData.id,
-      requestOptions
-    )
-      .then((response) => response.json())
-      .then((result) => {
-        setLike(parseInt(result.likes));
-        setDislike(parseInt(result.dislikes));
-        setIsDisliked(result.disliked);
-        setIsLiked(result.liked);
-      })
-      .catch((error) => console.log("error", error));
+    try {
+      let response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/likesdislikes?video_id=` +
+          videoMetaData.id,
+        requestOptions
+      );
+      if (!response.ok) {
+        throw new Error(
+          `HTTP error! Status: ${response.status}, ${response.statusText}`
+        );
+      }
+      let result = await response.json();
+      setLike(parseInt(result.likes));
+      setDislike(parseInt(result.dislikes));
+      setIsDisliked(result.disliked);
+      setIsLiked(result.liked);
+    } catch (error) {
+      console.log("error", error);
+    }
   };
   useEffect(() => {
     getLikeDislikeCommentData();
@@ -153,4 +152,4 @@ const VideoScreen = () => {
   );
 };
 
-export default VideoScreen;
+

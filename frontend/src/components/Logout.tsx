@@ -2,7 +2,8 @@ import React, { ReactElement, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { Flex, Button } from "@radix-ui/themes";
 import * as Dialog from "@radix-ui/react-dialog";
-const Logout = (): ReactElement => {
+
+export const Logout = (): ReactElement => {
   const Logout = () => {
     localStorage.removeItem("cookie");
     window.location.reload();
@@ -32,4 +33,3 @@ const Logout = (): ReactElement => {
   );
 };
 
-export default Logout;

@@ -1,21 +1,13 @@
 import React, { ReactElement, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { getCookie } from "../utils/cookie";
+import { IVideoData } from "../interfaces/IVideoData";
 
-interface videoData {
-  id: number;
-  thumbnail: string;
-  user_id: string;
-  description: string;
-  title: string;
-  videopath: string;
-  username: string;
-}
-const SearchResults = (): ReactElement => {
+export const SearchResults = (): ReactElement => {
   const { query } = useParams();
-  const [videos, setVideos] = useState<Array<videoData>>([]);
+  const [videos, setVideos] = useState<Array<IVideoData>>([]);
   useEffect(() => {
-    const getVideoData = () => {
+    const getVideoData = async () => {
       var myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
       myHeaders.append("Authorization", `Bearer ${getCookie("cookie")}`);
@@ -29,24 +21,25 @@ const SearchResults = (): ReactElement => {
         body: raw,
         headers: myHeaders,
       };
-
-      fetch("http://localhost:3001/metadata/search", requestOptions)
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error(
-              `HTTP error! Status: ${response.status}, ${response.statusText}`
-            );
-          }
-          return response.json();
-        })
-        .then((result: Array<videoData>) => {
-          setVideos(result);
-        })
-        .catch((error) => console.log("error", error));
+      try {
+        let response = await fetch(
+          `${import.meta.env.VITE_BACKEND_URL}/metadata/search`,
+          requestOptions
+        );
+        if (!response.ok) {
+          throw new Error(
+            `HTTP error! Status: ${response.status}, ${response.statusText}`
+          );
+        }
+        let result = await response.json();
+        setVideos(result);
+      } catch (error) {
+        console.log("error", error);
+      }
     };
 
     getVideoData();
-  }, []);
+  }, [query]);
   return (
     <div className="pt-20 px-10">
       <div className="text-white flex flex-col gap-4">
@@ -56,7 +49,8 @@ const SearchResults = (): ReactElement => {
               <div>
                 <img
                   src={
-                    "http://localhost:3001/uploads/thumbnails/" + item.thumbnail
+                    `${import.meta.env.VITE_BACKEND_URL}/uploads/thumbnails/` +
+                    item.thumbnail
                   }
                   className="rounded-xl w-[320px] h-[185px] object-cover"
                 />
@@ -75,5 +69,3 @@ const SearchResults = (): ReactElement => {
     </div>
   );
 };
-
-export default SearchResults;
