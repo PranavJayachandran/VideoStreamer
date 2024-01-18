@@ -93,7 +93,7 @@ Written in python it uses ffmpeg to convert the recieved video file into mpd for
 Written in python,the script utilizes the NLTK library for tokenization, stopword removal, and lemmatization to extract meaningful tags from video titles and descriptions
 
 ### Todo
-- [ ] Add all the interfaces in the frontend to one file.
+- [x] Add all the interfaces in the frontend to one file.
 - [ ] Improve the login auth.
 - [ ] Customise the videoPlayer.
 - [ ] Add notifications feature for new upload by joined channels.
